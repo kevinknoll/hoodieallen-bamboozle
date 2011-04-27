@@ -50,6 +50,17 @@ li {
   background:#333;
   position:absolute;
 }
+li img, li span {
+  display:block;
+  left:0;
+  position:absolute;
+  top:0;
+}
+li span {
+  height:100%;
+  width:100%;
+  z-index:1;
+}
 p {
   text-align:center;
 }
