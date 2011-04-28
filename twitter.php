@@ -7,12 +7,23 @@
 
   $xml = new SimpleXmlElement($output, LIBXML_NOCDATA);
   $cnt = count($xml);
-  $cnt = 10;
   $ids = $xml->id;
   $avatars = array();
+
   for ($i = 0; $i < $cnt; ++$i) {
     $id = $ids[$i];
     array_push($avatars,$id);
+
+    $remote = 'http://api.twitter.com/1/users/profile_image/' . $id . '?size=mini';
+    $local = 'img/' . $id;
+
+    if (!file_exists($local)) {
+      $img = file_get_contents($remote);
+      $fp  = fopen($local, 'w+');
+      fputs($fp, $img);
+      fclose($fp);
+      unset($img);
+    }
   }
   echo json_encode($avatars);
 ?>

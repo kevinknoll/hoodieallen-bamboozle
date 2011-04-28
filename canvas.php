@@ -9,15 +9,13 @@
         display:block;
         margin:50px auto;
       }
-      #placeholder {
-        /*display:none;*/
+      p {
+        text-align:center;
       }
     </style>
   </head>
   <body>
-    <div>
-
-    </div>
+    <div></div>
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
     <script>
       $(document).ready(function(){
@@ -42,8 +40,12 @@
             ctx.drawImage(img, x*dpi, y*dpi, dpi, dpi);
             ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
             ctx.fillRect(x*dpi, y*dpi, dpi, dpi);
-           };
-           img.src = 'http://api.twitter.com/1/users/profile_image/' + src + '?size=mini';
+          };
+          img.onerror = function (evt){
+            ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+            ctx.fillRect(x*dpi, y*dpi, dpi, dpi);
+          }
+          img.src = 'img/' + src;
         }
         function buildMosaic(avatars) {
           $.ajax({
@@ -51,6 +53,7 @@
             dataType: 'json',
             success: function(d){
               var dpi = 10;
+              <?php if (isset($_GET['dpi'])) { echo 'dpi = ' . $_GET['dpi'] . ';'; } ?>
               var w = d['w'] * dpi;
               var h = d['h'] * dpi;
               var pixels = d['pixels'];
@@ -59,8 +62,6 @@
               ctx = canvas.getContext('2d');
               canvas.width = w;
               canvas.height = h;
-
-              var img = new Image();
 
               var avatar_cnt = avatars.length;
               var avatar_idx = 0;
@@ -85,6 +86,8 @@
                 
               }
               $('div').append(canvas);
+              var p = $('<p>');
+              $('div').append(p.html('Debugging: Built w/ ' + pixels.length + ' Avatars'));
             }
           });
         }
