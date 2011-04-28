@@ -14,7 +14,9 @@ for($y = 0; $y < $h; ++$y)
     $colors = imagecolorsforindex($img, $pixel);
 
     $a = (127 - $colors['alpha']) / 127;
-    array_push($pixels,array('x' => $x, 'y' => $y, 'r' => $colors['red'], 'g' => $colors['green'], 'b' => $colors['blue'], 'a' => $a));
+    if ($a > 0) {
+      array_push($pixels,array('x' => $x, 'y' => $y, 'r' => $colors['red'], 'g' => $colors['green'], 'b' => $colors['blue'], 'a' => $a));
+    }
   }
 }
 
