@@ -1,10 +1,13 @@
 <?php
-$img = imagecreatefrompng('logo3.png');
+$img = imagecreatefrompng('logo5.png');
 
 $w = imagesx($img);
 $h = imagesy($img);
 
 $pixels = array();
+
+echo '{"w":' . $w . ',"h":' . $h . ',"pixels":[';
+$tmp = '';
 
 for($y = 0; $y < $h; ++$y)
 {
@@ -15,11 +18,13 @@ for($y = 0; $y < $h; ++$y)
 
     $a = (127 - $colors['alpha']) / 127;
     if ($a > 0) {
-      array_push($pixels,array('x' => $x, 'y' => $y, 'r' => $colors['red'], 'g' => $colors['green'], 'b' => $colors['blue'], 'a' => $a));
+      echo $tmp;
+      $tmp = json_encode(array('x' => $x, 'y' => $y, 'r' => $colors['red'], 'g' => $colors['green'], 'b' => $colors['blue'], 'a' => $a));
+      $tmp .= ',';
     }
   }
 }
 
-$data = array('w' => $w, 'h' => $h, 'pixels' => $pixels);
-echo json_encode($data);
+echo substr($tmp, 0, -1);
+echo ']}';
 ?>
