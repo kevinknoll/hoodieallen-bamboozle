@@ -26,8 +26,7 @@
             dataType: 'json',
             success: function(d){
               for (var i = 0; i < d.length; ++i) {
-                var avatar = d[i];
-                avatars[i] = avatar[0];
+                avatars[i] = d[i];
               }
               buildMosaic(avatars);
             }
@@ -45,7 +44,7 @@
             ctx.fillStyle = 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
             ctx.fillRect(x*dpi, y*dpi, dpi, dpi);
           }
-          img.src = 'img/' + src;
+          img.src = src;
         }
         function buildMosaic(avatars) {
           $.ajax({
@@ -65,7 +64,7 @@
 
               var avatar_cnt = avatars.length;
               var avatar_idx = 0;
-              var avatar_id;
+              var avatar;
 
               for (var i = 0; i < pixels.length; ++i) {
                 var pixel = pixels[i];
@@ -77,12 +76,12 @@
                 var a = pixel['a'] * .8;
 
                 if (avatar_idx < avatar_cnt) {
-                  avatar_id = avatars[avatar_idx++];
+                  avatar = avatars[avatar_idx++];
                 } else {
-                  avatar_id = avatars[0];
+                  avatar = avatars[0];
                   avatar_idx = 1;
                 }
-                drawAvatar(ctx, dpi, avatar_id, x, y, r, g, b, a);
+                drawAvatar(ctx, dpi, avatar, x, y, r, g, b, a);
                 
               }
               $('div').append(canvas);

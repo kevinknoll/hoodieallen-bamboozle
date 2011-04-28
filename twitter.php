@@ -12,17 +12,17 @@
 
   for ($i = 0; $i < $cnt; ++$i) {
     $id = $ids[$i];
-    array_push($avatars,$id);
-
     $remote = 'http://api.twitter.com/1/users/profile_image/' . $id . '?size=mini';
     $local = 'img/' . $id;
-
-    if (!file_exists($local)) {
-      $img = file_get_contents($remote);
+    if (file_exists($local)) {
+      array_push($avatars,$local);
+    } else {
+      /*$img = file_get_contents($remote);
       $fp  = fopen($local, 'w+');
       fputs($fp, $img);
       fclose($fp);
-      unset($img);
+      unset($img);*/
+      array_push($avatars,$remote);
     }
   }
   echo json_encode($avatars);
